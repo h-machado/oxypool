@@ -1,0 +1,2 @@
+# oxypool
+Oxycoin pool
