@@ -2,12 +2,14 @@
   "oxycoinnode": {
     "url field": "you should use localhost or restrict usage inside controlled network, if not, HTTPS please",
     "url": "https://testnet.oxycoin.io",
-    "environment": "testnet"
+    "environment": "testnet",
+    "fee": 10000000
   },
   "poolaccount": {
     "secret": "YOUR SECRET",
     "publicKey": "Your public key, check in your oxycoin wallet 'My Profile', it's the big string under address",
     "address": "Your address for balance checking and whatnot",
-    "distributionPercent": 0.1
+    "distributionPercent": 0.1,
+    "minTransfer": 100000000
   }
 }
