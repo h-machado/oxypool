@@ -145,5 +145,5 @@ Meanwhile, read the code, it's pretty straightforward.
 ## Disclaimer
 This software distributes a given percentage of your earnings at the account configured through the voters of that account, based on their weight.
 
-Feature requests, or problems, please just open an issue or push request.
+Feature requests, or problems, please just open an issue or create a pull request.
 
