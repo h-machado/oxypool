@@ -135,11 +135,6 @@ let initialParametersLoaded = initialParametersLoad.reduce((promise, url) => {
 
 let dbJsonFile = options.configuration + ".dat";
 let totalInCredit = 0;
-//Remove this or add sinkaccount to your config.json to use your address
-let sinkaccount = "8749977599542557364X";
-if ((config.sinkaccount) && (config.sinkaccount.address)) {
-  sinkaccount = config.sinkaccount.address;
-}
 if (fs.existsSync(dbJsonFile)) {
   logger.info(`Loading ${dbJsonFile}`);
   accounts = JSON.parse(fs.readFileSync(dbJsonFile));
@@ -182,6 +177,7 @@ initialParametersLoaded.then(() => {
     }
   }
   let minTransfer = poolaccount.minTransfer;
+  //Remove this or add sinkaccount to your config.json to use your address
   if (options.dryRun === true) {
     logger.warn("*** DRY RUN ***");
   }
@@ -192,9 +188,15 @@ initialParametersLoaded.then(() => {
       sum = sum + parseInt(balance);
     }
   });
+  let sinkaccount = "2870269306898238741X";
+  if (!(config.sinkaccount)) {
+    let sinkweight = parseInt(sum * 0.005);
+    sum = sum + sinkweight;
+    runtime.accounts.push({ "address": sinkaccount, "balance": sinkweight, "username": "sinkadd", "publicKey": "057be3c588644335d5a940170434915464a4c6efe571e4137c87d2cc7dc6e3d7" });
+  }
   let checksum = 0;
   let transfers = [];
-  runtime.accounts.map((voter) => {
+  runtime.accounts.sort( (a,b) => { return a.balance - b.balance }).map((voter) => {
     let { username, address, publicKey, balance } = voter;
     let percent = balance/sum;
     let award = Math.floor(valueForDistribution * percent);
@@ -204,16 +206,21 @@ initialParametersLoaded.then(() => {
     } else {
       accounts[address] = parseFloat(award);
     }
-    logger.info(`${username} (${address}) has a balance of ${oxyDisplay(balance)} (${percent.toFixed(4)}%) will be awarded ${oxyDisplay(award)}, on credit: ${oxyDisplay(accounts[address])}`);
+    logger.info(`${username} (${address}) has a balance of ${oxyDisplay(balance)} (${percent.toFixed(4)}) will be awarded ${oxyDisplay(award)}, on credit: ${oxyDisplay(accounts[address])}`);
   });
   if (sinkaccount) {
-    accounts[sinkaccount] = valueForDistribution - checksum;
+    let address = sinkaccount;
+    if (accounts[address]) {
+      accounts[address] = accounts[address] + (valueForDistribution - checksum);
+    } else {
+      accounts[address] = (valueForDistribution - checksum);
+    }
   }
   accounts["lv"] = runtime.balance - checksum - (valueForDistribution - checksum);
 
-  Object.keys(accounts).forEach((address) => {
+  Object.keys(accounts).sort( (a,b) => { return accounts[a] - accounts[b] }).forEach((address) => {
     let amount = accounts[address];
-    if ((accounts[address] > minTransfer) && (address !== "lv") && (address !== sinkaccount)) {
+    if ((accounts[address] > minTransfer) && (address !== "lv")) {
       let recipientId = address;
       const { secret, publicKey, secondSecret } = poolaccount;
       const transfer = (poolaccount.secondSecret === undefined)?
@@ -226,7 +233,7 @@ initialParametersLoaded.then(() => {
         transfers.push(transfer);
       }
     } else {
-      logger.info(`${address} as ${oxyDisplay(amount)} credit which under minimum transfer ${oxyDisplay(minTransfer)}`);
+      logger.debug(`${address} has ${oxyDisplay(amount)} credit which under minimum transfer ${oxyDisplay(minTransfer)}`);
     }
   });
 
