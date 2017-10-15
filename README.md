@@ -1,5 +1,9 @@
 # oxypool
-Oxycoin pool
+Oxycoin pool, distribute a percentage of your balance/forging through your voters.
+
+Distribution is based on voting weight, this means that if a user as a voting stake of 10% on your configured account, that user will receive 10% of your configured percentage of balance (see config.json).
+
+Every time you run oxypool, the configured account's balance is checked, the configured percentage computed and distributed according voter's weight.
 
 ## Installing
 ```
