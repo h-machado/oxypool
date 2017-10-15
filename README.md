@@ -37,7 +37,20 @@ You'll find the default file as this:
 ## Executing
 Just run node:
 ```
+node . -n
+```
+The "-n" flag stands for dry run, this will only test your configuration and let you know what transfers would occur.
+To run and execute transfers run the same command without the "-n" flag:
+```
 node .
+```
+
+Also try running "distribute.sh", it's a shell script that somewhat checklists what you have to do to have this working.
+It wont make any transactions but it'll guide on how to execute the distributions
+```
+$ ./distribute.sh 
+Using config file /data/code/oxypool/config.json
+ERROR: You must configure your OXY address in /data/code/oxypool/config.json (poolaccount.address)
 ```
 
 For now it's intended to be launched from the crontable or from a terminal window with the desired frequency (hourly, daily, whatever).

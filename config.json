@@ -7,7 +7,7 @@
   },
   "poolaccount": {
     "secret": "YOUR SECRET",
-    "publicKey": "Your public key, check in your oxycoin wallet 'My Profile', it's the big string under address",
+    "publicKey": "The public key for this address and secret",
     "address": "Your address for balance checking and whatnot",
     "distributionPercent": 0.1,
     "minTransfer": 100000000
