@@ -41,7 +41,7 @@ let config = {}
 try {
   config = require(options.configuration);
 } catch(e) {
-  logger.error(`Configuration file ${configuration} is an invalid json file: ${e.message}`);
+  logger.error(`Configuration file ${options.configuration} is an invalid json file: ${e.message}`);
   process.exit(15);
 }
 
