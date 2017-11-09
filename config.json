@@ -7,6 +7,7 @@
   },
   "poolaccount": {
     "secret": "YOUR SECRET",
+    "secondSecret": "YOUR 2nd SECRET if any, if not, remove this line",
     "publicKey": "The public key for this address and secret",
     "address": "Your address for balance checking and whatnot",
     "distributionPercent": 0.1,
